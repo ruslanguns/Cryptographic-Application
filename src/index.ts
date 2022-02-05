@@ -53,7 +53,7 @@ app.post(`/encrypt`, async (req, res) => {
   try {
     const { body } = req;
 
-    if (!body) {
+    if (!body || Object.keys(body).length === 0) {
       return res.status(400).send("No body");
     }
 
