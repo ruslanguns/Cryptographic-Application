@@ -21,8 +21,8 @@ interface IEncrypted {
   key: string;
 }
 
-const encrypt = (text: Record<string, any>): IEncrypted => {
-  const body = JSON.stringify(text);
+const encrypt = (data: Record<string, any>): IEncrypted => {
+  const body = JSON.stringify(data);
   const txId = crypto.randomBytes(16);
   const cipher = crypto.createCipheriv(algorithm, secretKey, txId);
 
@@ -34,15 +34,15 @@ const encrypt = (text: Record<string, any>): IEncrypted => {
   };
 };
 
-const decrypt = (hash: IEncrypted): Record<string, any> => {
+const decrypt = ({txId, key}: IEncrypted): Record<string, any> => {
   const decipher = crypto.createDecipheriv(
     algorithm,
     secretKey,
-    Buffer.from(hash.txId, "hex")
+    Buffer.from(txId, "hex")
   );
 
   const decrpyted = Buffer.concat([
-    decipher.update(Buffer.from(hash.key, "hex")),
+    decipher.update(Buffer.from(key, "hex")),
     decipher.final(),
   ]);
 
