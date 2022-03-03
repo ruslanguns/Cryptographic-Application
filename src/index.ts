@@ -49,7 +49,7 @@ const decrypt = (hash: IEncrypted): Record<string, any> => {
   return JSON.parse(decrpyted.toString());
 };
 
-app.post(`/encrypt`, async (req, res) => {
+app.post(`/blockchain/save`, async (req, res) => {
   try {
     const { body } = req;
 
@@ -69,8 +69,10 @@ app.post(`/encrypt`, async (req, res) => {
   }
 });
 
-app.post(`/decrypt`, async (req, res) => {
+app.post(`/blockchain/retrieve`, async (req, res) => {
   try {
+    console.log("Comenzando el proceso de encriptación");
+
     const { body } = req;
 
     if (!body || !body.txId || !body.key) {
@@ -78,6 +80,8 @@ app.post(`/decrypt`, async (req, res) => {
     }
 
     const result = decrypt(body);
+
+    console.log("Encriptación terminada con éxito");
 
     res.json(result);
   } catch (error: any) {
